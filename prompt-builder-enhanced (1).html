@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompt Builder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f5;
+      padding: 2em;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 2em;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      font-weight: bold;
+    }
+    input, textarea, select {
+      width: 100%;
+      margin-bottom: 1em;
+      padding: 0.5em;
+      font-size: 1em;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 0.7em 1.5em;
+      font-size: 1em;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 1em;
+    }
+    pre {
+      background: #e8e8e8;
+      padding: 1em;
+      white-space: pre-wrap;
+      border-radius: 5px;
+      margin-top: 1em;
+    }
+    .history {
+      margin-top: 2em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧠 Prompt Builder</h1>
+    <label for="goal">🎯 Goal (Cel):</label>
+    <input type="text" id="goal" placeholder="What do you want the AI to do?" />
+
+    <label for="role">🧑‍💼 Role (Rola modelu):</label>
+    <input type="text" id="role" placeholder="Who should the AI act as?" />
+
+    <label for="context">📚 Context (Kontekst):</label>
+    <textarea id="context" placeholder="What background information does the AI need?"></textarea>
+
+    <label for="input">📝 Input (Dane wejściowe):</label>
+    <textarea id="input" placeholder="What kind of data or user input will be provided?"></textarea>
+
+    <label for="output">📦 Output Format (Format odpowiedzi):</label>
+    <input type="text" id="output" placeholder="List, code, essay, etc." />
+
+    <label for="style">🎨 Style/Tone (Styl i ton):</label>
+    <input type="text" id="style" placeholder="Formal, friendly, technical, narrative, etc." />
+
+    <button onclick="generatePrompt()">🔧 Generate Prompt</button>
+    <button onclick="copyPrompt()">📋 Copy to Clipboard</button>
+
+    <h2>📋 Generated Prompt</h2>
+    <pre id="result"></pre>
+
+    <div class="history">
+      <h2>📜 Prompt History</h2>
+      <div id="history"></div>
+    </div>
+  </div>
+
+  <script>
+    const history = [];
+
+    function generatePrompt() {
+      const goal = document.getElementById("goal").value;
+      const role = document.getElementById("role").value;
+      const context = document.getElementById("context").value;
+      const input = document.getElementById("input").value;
+      const output = document.getElementById("output").value;
+      const style = document.getElementById("style").value;
+
+      const prompt = `GOAL: ${goal}\nROLE: ${role}\nCONTEXT: ${context}\nINPUT: ${input}\nOUTPUT FORMAT: ${output}\nSTYLE/TONE: ${style}`;
+
+      document.getElementById("result").innerText = prompt;
+      history.push(prompt);
+      updateHistory();
+    }
+
+    function copyPrompt() {
+      const text = document.getElementById("result").innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Prompt copied to clipboard!");
+      });
+    }
+
+    function updateHistory() {
+      const historyDiv = document.getElementById("history");
+      historyDiv.innerHTML = "";
+      history.slice().reverse().forEach((entry) => {
+        const div = document.createElement("div");
+        div.innerHTML = `<pre>${entry}</pre>`;
+        historyDiv.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
